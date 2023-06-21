@@ -12,15 +12,15 @@ def get_iou(bbox1, bbox2):
     area1 = (xmax1 - xmin1) * (ymax1 - ymin1)
     area2 = (xmax2 - xmin2) * (ymax2 - ymin2)
 
-    xmin_inter = max(xmin1, xmin2)
-    xmax_inter = min(xmax1, xmax2)
-    ymin_inter = max(ymin1, ymin2)
-    ymax_inter = min(ymax1, ymax2)
+    xmin_insec = max(xmin1, xmin2)
+    ymin_insec = max(ymin1, ymin2)
+    xmax_insec = min(xmax1, xmax2)
+    ymax_insec = min(ymax1, ymax2)
     
-    area_inter = max(0, xmax_inter - xmin_inter) * max(0, ymax_inter - ymin_inter)
-    area_union = area1 + area2 - area_inter
+    area_insec = max(0, xmax_insec - xmin_insec) * max(0, ymax_insec - ymin_insec)
+    area_union = area1 + area2 - area_insec
 
-    iou = area_inter / area_union
+    iou = area_insec / area_union
     return iou
 
 
@@ -31,15 +31,15 @@ def get_giou(bbox1, bbox2):
     area1 = (xmax1 - xmin1) * (ymax1 - ymin1)
     area2 = (xmax2 - xmin2) * (ymax2 - ymin2)
 
-    xmin_enclose, xmin_inter = sorted([xmin1, xmin2])
-    ymin_enclose, ymin_inter = sorted([ymin1, ymin2])
-    xmax_inter, xmax_enclose = sorted([xmax1, xmax2])
-    ymax_inter, ymax_enclose = sorted([ymax1, ymax2])
+    xmin_enclose, xmin_insec = sorted([xmin1, xmin2])
+    ymin_enclose, ymin_insec = sorted([ymin1, ymin2])
+    xmax_insec, xmax_enclose = sorted([xmax1, xmax2])
+    ymax_insec, ymax_enclose = sorted([ymax1, ymax2])
     
-    area_inter = max(0, xmax_inter - xmin_inter) * max(0, ymax_inter - ymin_inter)
-    area_union = area1 + area2 - area_inter
+    area_insec = max(0, xmax_insec - xmin_insec) * max(0, ymax_insec - ymin_insec)
+    area_union = area1 + area2 - area_insec
 
-    iou = area_inter / area_union
+    iou = area_insec / area_union
     
     area_enclose = (xmax_enclose - xmin_enclose) * (ymax_enclose - ymin_enclose)
     giou = iou - (area_enclose - area_union) / area_enclose
